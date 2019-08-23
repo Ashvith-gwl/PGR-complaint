@@ -48,9 +48,9 @@ function Comform() {
             </Link>
             {/* <LoginNav /> */}
             <Grid container direction="row" >
-                <Grid md={6} align="right">
+                <Grid item md={6} align="right">
                     <div className={classes.labelitem}>
-                        <label htmlfor="outlined-name">Verification Code</label>
+                        <label htmlFor="outlined-name">Verification Code</label>
                     </div>
                 </Grid>
                 <Grid md={6} >
@@ -104,7 +104,7 @@ function Comform() {
             <Grid container direction="row" >
                 <Grid md={6} align="right">
                     <div className={classes.labelitem}>
-                        <label htmlfor="outlined-name">Complaint</label>
+                        <label htmlFor="outlined-name">Complaint</label>
                     </div>
                 </Grid>
                 <Grid md={6}  >

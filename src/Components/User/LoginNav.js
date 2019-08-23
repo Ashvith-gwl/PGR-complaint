@@ -17,13 +17,16 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
+  nav:{
+    backgroundColor: '#2196f3',
+  }
 };
 
 function Navbar(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="relative" >
+      <AppBar position="relative" className={classes.nav}>
         <Toolbar>
           <Typography variant="h5" color="inherit" className={classes.grow}>
             App-Name

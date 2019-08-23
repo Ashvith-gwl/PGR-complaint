@@ -1,12 +1,17 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/styles';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import { Link } from 'react-router-dom'
 
-const useStyles = makeStyles(theme => ({
+import { FormErrors } from './FormErrors';
+
+
+const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -17,7 +22,8 @@ const useStyles = makeStyles(theme => ({
   btn: {
     backgroundColor: '#2196f3',
     color: '#fff',
-    margin: '16px'
+    margin: '16px',
+    padding:'0px'
   },
   dense: {
     marginTop: 16,
@@ -27,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   froms: {
     textAlign: 'center',
-    transform:'translate(0%, 50%)',
+    transform: 'translate(0%, 50%)',
     position: 'relative',
   },
   login: {
@@ -43,127 +49,153 @@ const useStyles = makeStyles(theme => ({
   divAtag: {
     color: "#ffffff",
     textDecoration: "none",
+    padding:'10px 30px'
   },
-}));
+});
 
 
-function TextFields() {
-  const classes = useStyles();
-  return (
-    <div>
-      <form autoComplete="off" className={classes.froms}>
-        <Grid container direction="row" justify="center" alignitems="center">
-          <div className={classes.login}>
-            <span className={classes.text}>Login</span>
-            <Grid item md={6}  >
-              <TextField
-                id="outlined-email-input"
-                label="Email"
-                className={classes.textField}
-                type="email"
-                name="email"
-                autoComplete="email"
-                margin="normal"
-                variant="outlined"
-              />
-            </Grid>
+class TextFields extends Component {
 
-            <Grid item md={6}>
-              <TextField
-                id="outlined-password-input"
-                label="Password"
-                className={classes.textField}
-                type="password"
-                autoComplete="current-password"
-                margin="normal"
-                variant="outlined"
-              />
-            </Grid>
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      formErrors: { email: '', password: '' },
+      emailValid: false,
+      passwordValid: false,
+      formValid: false
+    }
+  }
 
-            <Grid item md={12} >
-             <Link to="/user-home" className={classes.divAtag}>
-              <Button className={classes.btn} variant="contained" >
-                Login
+  handleUserInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ [name]: value },
+      () => { this.validateField(name, value) });
+  }
+
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+
+    switch (fieldName) {
+      case 'email':
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+        break;
+      case 'password':
+        passwordValid = value.length >= 4;
+        fieldValidationErrors.password = passwordValid ? '' : ' is too short';
+        break;
+      default:
+        break;
+    }
+    this.setState({
+      formErrors: fieldValidationErrors,
+      emailValid: emailValid,
+      passwordValid: passwordValid
+    }, this.validateForm);
+  }
+
+  validateForm() {
+    this.setState({ formValid: this.state.emailValid && this.state.passwordValid });
+  }
+
+  errorClass(error) {
+    return (error.length === 0 ? '' : 'has-error');
+  }
+
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div>
+        <form autoComplete="off" className={classes.froms}>
+          <Grid container direction="row" justify="center" alignitems="center">
+            <div className={classes.login}>
+              <span className={classes.text}>Login</span>
+              <FormErrors formErrors={this.state.formErrors} />
+
+              <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+                <Grid item md={6}  >
+                  <TextField
+                    id="outlined-email-input"
+                    label="Email"
+                    className={classes.textField}
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    margin="normal"
+                    variant="outlined"
+                    value={this.state.email}
+                    onChange={this.handleUserInput}
+                  />
+
+                </Grid>
+              </div>
+
+              <div className={`form-group ${this.errorClass(this.state.formErrors.password)}`}>
+                <Grid item md={6}>
+                  <TextField
+                    id="outlined-password-input"
+                    label="Password"
+                    className={classes.textField}
+                    type="password"
+                    autoComplete="current-password"
+                    margin="normal"
+                    variant="outlined"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.handleUserInput}
+                  />
+                </Grid>
+              </div>
+
+              <Grid item md={12} >
+                
+                  <Button className={classes.btn} variant="contained" disabled={!this.state.formValid}>
+                  <Link to="/user-home" className={classes.divAtag}>Login
+                  </Link>
               </Button>
-             </Link>
-            </Grid>
-          </div>
-        </Grid>
-      </form>
-    </div>
-  );
+                
+              </Grid>
+            </div>
+          </Grid>
+        </form>
+
+        {/* <form className="demoForm">
+        <h2>Sign up</h2>
+        <div className="panel panel-default">
+          <FormErrors formErrors={this.state.formErrors} />
+        </div>
+        <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+          <label htmlFor="email">Email address</label>
+          <input type="email" required className="form-control" name="email"
+            placeholder="Email"
+            value={this.state.email}
+            onChange={this.handleUserInput}  />
+        </div>
+        <div className={`form-group ${this.errorClass(this.state.formErrors.password)}`}>
+          <label htmlFor="password">Password</label>
+          <input type="password" className="form-control" name="password"
+            placeholder="Password"
+            value={this.state.password}
+            onChange={this.handleUserInput}  />
+        </div>
+        <button type="submit" className="btn btn-primary" disabled={!this.state.formValid}>Sign up</button>
+      </form> */}
+
+      </div>
+    );
+  }
 }
 
-export default TextFields;
+// export default TextFields;
 
+TextFields.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
-// import React from 'react';
-// import PropTypes from 'prop-types';
-// import { withStyles } from '@material-ui/core/styles';
-// import Paper from '@material-ui/core/Paper';
-// import Grid from '@material-ui/core/Grid';
-
-// const styles = theme => ({
-//   root: {
-//     flexGrow: 1,
-//   },
-//   paper: {
-//     padding: theme.spacing.unit * 2,
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//   },
-// });
-
-// function TextFields(props) {
-//   const { classes } = props;
-
-//   return (
-//     <div className={classes.root}>
-//       <Grid container direction="row" alignitems="center" justify="center">
-//         {/* <Grid item xs={12} sm={6}>
-//           <Paper className={classes.paper}>xs=12 sm=6</Paper>
-//         </Grid> */}
-//         <div className={classes.login}>
-//             <span className={classes.text}>Login</span>
-//             <Grid item md={6}  >
-//               <TextField
-//                 id="outlined-email-input"
-//                 label="Email"
-//                 className={classes.textField}
-//                 type="email"
-//                 name="email"
-//                 autoComplete="email"
-//                 margin="normal"
-//                 variant="outlined"
-//               />
-//             </Grid>
-
-//             <Grid item md={6}>
-//               <TextField
-//                 id="outlined-password-input"
-//                 label="Password"
-//                 className={classes.textField}
-//                 type="password"
-//                 autoComplete="current-password"
-//                 margin="normal"
-//                 variant="outlined"
-//               />
-//             </Grid>
-
-//             <Grid item md={6} >
-//               <Button className={classes.btn} variant="contained" >
-//                 <Link to="/user-home" className={classes.divAtag}>Login</Link>
-//               </Button>
-//             </Grid>
-//           </div>
-//       </Grid>
-//     </div>
-//   );
-// }
-
-// TextFields.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
-
-// export default withStyles(styles)(TextFields);
-
+export default withStyles(styles)(TextFields);

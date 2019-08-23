@@ -1,118 +1,89 @@
-import React from 'react';
-import MaterialTable from 'material-table';
+import React,{Component} from 'react';
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import LoginNav from './LoginNav'
 
 import Grid from '@material-ui/core/Grid';
 
 import { Link } from 'react-router-dom'
 
-export default function MaterialTableDemo() {
-  const [state, setState] = React.useState({
-    columns: [
-      { title: 'Name', field: 'name' },
-      { title: 'category', field: 'category' },
-      { title: 'complaint', field: 'complaint' },
-      { title: 'Comp ID', field: 'Status', type: 'numeric' },
-      { title: 'Status',
-        field: 'birthCity', lookup: { 1: 'Active', 0: 'Resolved' },
-      },
-    ],
-    data: [
-      { name: 'Name', 
-        category: 'Others', 
-        complaint: 'Loreum is a simple dummt text used for typewritting.Loreum is a simple dummt text used for typewritting',
-        Status: 201908,
-        birthCity: 1 },
-      {
-        name: 'Name 1',
-        category: 'Others',
-        complaint: 'Loreum is a simple dummt text used for typewritting.Loreum is a simple dummt text used for typewritting',
-        Status: 201901,
-        birthCity: 0,
-      },
-      {
-        name: 'Name 2',
-        category: 'Others',
-        complaint: 'Loreum is a simple dummt text used for typewritting.Loreum is a simple dummt text used for typewritting',
-        Status: 201901,
-        birthCity: 0,
-      },
-      {
-        name: 'Name 3',
-        category: 'Others',
-        complaint: 'Loreum is a simple dummt text used for typewritting.Loreum is a simple dummt text used for typewritting',
-        Status: 201901,
-        birthCity: 1,
-      },
-      {
-        name: 'Name 2',
-        category: 'Others',
-        complaint: 'Loreum is a simple dummt text used for typewritting.Loreum is a simple dummt text used for typewritting',
-        Status: 201901,
-        birthCity: 0,
-      },
-      {
-        name: 'Name 3',
-        category: 'Others',
-        complaint: 'Loreum is a simple dummt text used for typewritting.Loreum is a simple dummt text used for typewritting',
-        Status: 201901,
-        birthCity: 1,
-      },
-    ],
-  });
+const styles = {
+  root: {
+    width: '100%',
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  },
+  divAtag: {
+    color: "#2196f3",
+    textDecoration: "none",
+  },
+  add: {
+    color: '#2196f3',
+    float: 'right'
+  }
+};
+
+ 
+class SimpleTable extends Component {
+  render(){
+  const { removeCharacter, characters=[] ,classes} = this.props;
 
   return (
     <div>
       <LoginNav />
 
-      <Grid container  direction="row" justify="center" alignItems="center">
-        <Grid item  md={10}>
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item md={10}>
           <h3>
-            <Link to='/user-complaint' >Dashboard</Link>
-            </h3> </Grid>
+            <Link to='/user-complaint' className={classes.divAtag}>Register Complaint</Link>
+          </h3> </Grid>
       </Grid>
 
       <Grid container
-            direction="row"
-            justify="center"
-            alignItems="center">
+        direction="row"
+        justify="center"
+        alignItems="center">
         <Grid item md={8} xs={12}>
-    <MaterialTable
-      title="Editable Example"
-      columns={state.columns}
-      data={state.data}
-      editable={{
-        onRowAdd: newData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              const data = [...state.data];
-              data.push(newData);
-              setState({ ...state, data });
-            }, 600);
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              const data = [...state.data];
-              data[data.indexOf(oldData)] = newData;
-              setState({ ...state, data });
-            }, 600);
-          }),
-        onRowDelete: oldData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              const data = [...state.data];
-              data.splice(data.indexOf(oldData), 1);
-              setState({ ...state, data });
-            }, 600);
-          }),
-      }}
-    />
-    </Grid>
-    </Grid>
-  </div>
+          <Paper className={classes.root}>
+            <Link to='/user-complaint' >
+              <Button className={classes.add}>
+                <i className="material-icons">add</i>
+              </Button>
+            </Link>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell >Complaint</TableCell>
+                  <TableCell >Comp ID</TableCell>
+                  <TableCell >Status</TableCell>
+                  <TableCell >Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {characters.map((row,id) => (
+                  <TableRow key={id}>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.category}</TableCell>
+                    <TableCell >{row.complaint}</TableCell>
+                    <TableCell >{row.compID}</TableCell>
+                    <TableCell >{row.status}</TableCell>
+                    <TableCell ><Button onClick={() =>removeCharacter(id)}>Delete</Button></TableCell>
+                  </TableRow>
+                ) )
+              }
+              </TableBody>
+            </Table>
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
+}
+
+
+export default withStyles(styles)(SimpleTable);
