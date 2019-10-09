@@ -9,6 +9,8 @@ import AdminLogin from './Components/Admin/AdminLogin'
 import AdminHome from './Components/Admin/AdminHome'
 import User from './Components/User/UserHome'
 
+import AdminTable from './Components/Admin/AdminTable'
+
 import CompList from './Components/User/Table'
 
 
@@ -20,12 +22,13 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/complaint" component={Complaint} />
         <Route path="/admin-login" component={AdminLogin} />
-        <Route path="/admin-home" component={AdminHome} />
+        <Route exact path="/admin-home" component={AdminHome} />
 
 
         <Route path="/user-home" component={User} />
         <Route path="/user-complaint" component={UserComplaint} />
         <Route path="/user-list" component={CompList} />
+        <Route exact path="/admin-home/info" component={AdminTable} />
         
       </div>
     </BrowserRouter>

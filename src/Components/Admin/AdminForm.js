@@ -1,167 +1,148 @@
-import React from 'react';
-// import LoginNav from './LoginNav';
-import { TextField, Grid, makeStyles, FormControl,Button, InputLabel,Select, MenuItem } from "@material-ui/core";
+import React, { Component } from 'react';
+// import { TextField, Grid, makeStyles, FormControl,Button, InputLabel,Select, MenuItem } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
+import { connect } from 'react-redux';
+
+import uuidv1 from "uuid"
+
+
+const styles = theme => ({
   textField: {
     width: '300px',
   },
   labelitem: {
     margin: ' 30px 40px'
   },
-  slecetCat:{
+  slecetCat: {
     marginTop: '13px',
   },
-  btnn:{
-    margin:'21px',
+  btnn: {
+    margin: '21px',
     width: '12%',
     padding: '10px',
     background: "#2196f3",
+<<<<<<< HEAD
+=======
+    color:'#fff'
+  },
+  frm: {
+    textAlign: 'center',
+>>>>>>> 452b41c12513dd14ada334f86ee4f09969553eb0
   }
-}));
+});
 
-function Comform() {
+class Comform extends Component {
 
-  const classes = useStyles();
-  const [age, setAge] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      emailid:'',
+      department:'',
+      complaint:''
+    }
+  }
+  
 
-  function handleChange(event) {
-    setAge(event.target.value);
+  handleChange = (event) => {
+    const { name, value } = event.target
+
+    this.setState({
+      [name]: value,
+    })
   }
 
-  function handleClose() {
-    setOpen(false);
+submitForm = (e) => {
+    e.preventDefault();
+    const v1options = {
+      node: [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+      clockseq: 0x1234,
+      msecs: new Date('2011-11-01').getTime(),
+      nsecs: 5678
+    };
+    let data = {
+      // id: Math.floor(Math.random() * 100),
+      id: uuidv1(v1options),
+      name: this.state.name,
+      emailid: this.state.emailid,
+      department: this.state.department,
+      complaint: this.state.complaint
+    }
+    
+    // console.log(data)
+    this.props.dispatch({
+      type:'ADD_POST',
+    data});
+    // this.data.id ='';
+    // this.state.name = '';
   }
 
-  function handleOpen() {
-    setOpen(true);
-  }
-  return (
-    <div>
-      {/* <LoginNav /> */}
-      <Grid container direction="row" >
-        <Grid md={6} align="right">
-          <div className={classes.labelitem}>
-            <label htmlfor="outlined-name">Name</label>
-          </div>
-        </Grid>
-        <Grid md={6} >
+
+  render() {
+    const { classes } = this.props;
+    const {name,emailid,department,complaint} = this.state;
+    return (
+      <div>
+        <form className={classes.frm} onSubmit={this.handleSubmit}>
           <TextField
-            id="outlined-name"
-            label="Name"
+            id="outlined-email-input"
+            label="name"
             className={classes.textField}
-            placeholder="code"
-            // onChange={handleChange('name')}
+            name="name"
+            value={name}
             margin="normal"
             variant="outlined"
+            onChange={this.handleChange}
           />
-        </Grid>
-      </Grid>
+          <br/>
+          <TextField
+            label="email"
+            className={classes.textField}
+            name="emailid"
+            value={emailid}
+            margin="normal"
+            variant="outlined"
+            onChange={this.handleChange}
+          />
+          <br />
+          <TextField
+            id="outlined-email-input"
+            label="department"
+            className={classes.textField}
+            name="department"
+            value={department}
+            margin="normal"
+            variant="outlined"
+            onChange={this.handleChange}
+          />
+          <br/>
+          <TextField
+            label="emp id"
+            className={classes.textField}
+            name="complaint"
+            value={complaint}
+            margin="normal"
+            variant="outlined"
+            onChange={this.handleChange}
+          />
+          <br /> <br />
+          <Button onClick={this.submitForm} variant="contained" className={classes.btnn} >
+            Submit
+          </Button>
+        </form>
 
-
-      <Grid container direction="row" >
-        <Grid md={6} align="right">
-          <div className={classes.labelitem}>
-            <div className={classes.button} onClick={handleOpen}>
-              Department
       </div>
-          </div>
-        </Grid>
-        <Grid md={6} >
-          <FormControl className={[classes.formControl, classes.slecetCat]}>
-            <InputLabel htmlFor="demo-controlled-open-select">Department</InputLabel>
-            <Select
-              open={open}
-              className={classes.textField}
-              onClose={handleClose}
-              onOpen={handleOpen}
-              value={age}
-              onChange={handleChange}
-              inputProps={{
-                name: 'age',
-                id: 'demo-controlled-open-select',
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>IT</MenuItem>
-              <MenuItem value={20}>ITES</MenuItem>
-              <MenuItem value={30}>Network</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-
-      <Grid container direction="row" >
-        <Grid md={6} align="right">
-          <div className={classes.labelitem}>
-            <label htmlfor="outlined-name">Designation</label>
-          </div>
-        </Grid>
-        <Grid md={6} >
-          <TextField
-            id="outlined-name"
-            label="Designation"
-            className={classes.textField}
-            placeholder="code"
-            // onChange={handleChange('name')}
-            margin="normal"
-            variant="outlined"
-          />
-        </Grid>
-      </Grid>
-
-      <Grid container direction="row" >
-        <Grid md={6} align="right">
-          <div className={classes.labelitem}>
-            <label htmlfor="outlined-name">Role</label>
-          </div>
-        </Grid>
-        <Grid md={6} >
-          <TextField
-            id="outlined-name"
-            label="Role"
-            className={classes.textField}
-            placeholder="code"
-            // onChange={handleChange('name')}
-            margin="normal"
-            variant="outlined"
-          />
-        </Grid>
-      </Grid>
-
-      <Grid container direction="row" >
-        <Grid md={6} align="right">
-          <div className={classes.labelitem}>
-            <label htmlfor="outlined-name">Additional Info</label>
-          </div>
-        </Grid>
-        <Grid md={6}  >
-          <TextField
-           multiline="true"
-           rows={4}
-           rowsMax={8}
-            id="outlined-name"
-            label="Additional info"
-            className={classes.textField}
-            placeholder="code"
-            // onChange={handleChange('name')}
-            margin="normal"
-            variant="outlined"
-          />
-        </Grid>
-      </Grid>
-
-      <Grid direction="row" align="center">
-      <Button variant="contained" color="primary" className={[classes.button, classes.btnn]}>
-        Submit
-      </Button>
-      </Grid>
-
-    </div>
-  );
+    );
+  }
 }
 
-export default Comform;
+
+Comform.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default connect()(withStyles(styles)(Comform));

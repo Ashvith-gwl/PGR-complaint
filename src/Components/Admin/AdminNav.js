@@ -6,6 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+import { Link } from 'react-router-dom'
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -17,8 +19,17 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
+<<<<<<< HEAD
   nav:{
     backgroundColor: '#2196f3',
+=======
+  nav: {
+    backgroundColor: '#2196f3',
+  },
+  alink:{
+    color:'#fff',
+    textDecoration:'none',
+>>>>>>> 452b41c12513dd14ada334f86ee4f09969553eb0
   }
 };
 
@@ -31,8 +42,12 @@ function Navbar(props) {
           <Typography variant="h5" color="inherit" className={classes.grow}>
             App-Name
           </Typography>
-          <Button color="inherit">Home</Button>
-          <Button color="inherit">Dashboard</Button>
+          <Link to='/admin-home' >
+            <Button className={classes.alink}>Home</Button>
+          </Link>
+          <Link to='/admin-home/info' >
+            <Button className={classes.alink}>Dashboard</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
