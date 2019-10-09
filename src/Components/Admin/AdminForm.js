@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
   btnn:{
     margin:'21px',
     width: '12%',
-    padding: '10px'
+    padding: '10px',
+    background: "#2196f3",
   }
 }));
 

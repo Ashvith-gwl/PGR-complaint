@@ -23,7 +23,7 @@ const styles = theme => ({
     backgroundColor: '#2196f3',
     color: '#fff',
     margin: '16px',
-    padding:'0px'
+    padding: '0px'
   },
   dense: {
     marginTop: 16,
@@ -49,7 +49,7 @@ const styles = theme => ({
   divAtag: {
     color: "#ffffff",
     textDecoration: "none",
-    padding:'10px 30px'
+    padding: '10px 30px'
   },
 });
 
@@ -154,45 +154,22 @@ class TextFields extends Component {
               </div>
 
               <Grid item md={12} >
-                
-                  <Button className={classes.btn} variant="contained" disabled={!this.state.formValid}>
+
+                <Button className={classes.btn} variant="contained" disabled={!this.state.formValid}>
                   <Link to="/user-home" className={classes.divAtag}>Login
                   </Link>
-              </Button>
-                
+                </Button>
+
               </Grid>
             </div>
           </Grid>
         </form>
-
-        {/* <form className="demoForm">
-        <h2>Sign up</h2>
-        <div className="panel panel-default">
-          <FormErrors formErrors={this.state.formErrors} />
-        </div>
-        <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
-          <label htmlFor="email">Email address</label>
-          <input type="email" required className="form-control" name="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleUserInput}  />
-        </div>
-        <div className={`form-group ${this.errorClass(this.state.formErrors.password)}`}>
-          <label htmlFor="password">Password</label>
-          <input type="password" className="form-control" name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleUserInput}  />
-        </div>
-        <button type="submit" className="btn btn-primary" disabled={!this.state.formValid}>Sign up</button>
-      </form> */}
 
       </div>
     );
   }
 }
 
-// export default TextFields;
 
 TextFields.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -59,8 +59,8 @@ class Comform extends Component {
   }
 
   submitForm = () => {
-    this.props.handleSubmit(this.state)
-    this.setState(this.initialState)
+    // this.props.handleSubmit(this.state)
+    // this.setState(this.initialState)
   }
 
  
